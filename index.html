@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="壁纸样机生成器 - 在线将壁纸贴入样机图">
+  <title>壁纸样机生成器 - 在线版</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="title">壁纸样机生成器</h1>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="btnMockup">上传样机图</button>
+        <button type="button" class="btn btn-secondary" id="btnWallpaper" disabled>上传壁纸</button>
+        <button type="button" class="btn btn-secondary" id="btnClear">清空</button>
+        <button type="button" class="btn btn-secondary" id="btnPreview" disabled>预览</button>
+        <button type="button" class="btn btn-primary" id="btnExport" disabled>导出</button>
+      </div>
+      <input type="file" id="inputMockup" accept=".jpg,.jpeg,.png,.webp,.svg" hidden>
+      <input type="file" id="inputWallpaper" accept=".jpg,.jpeg,.png,.webp,.svg" hidden>
+    </header>
+
+    <main class="main">
+      <div class="workspace">
+        <div id="dropZone" class="drop-zone">
+          <div id="placeholder" class="placeholder">
+            <p>拖拽或点击「上传样机图」选择图片</p>
+            <p class="hint">支持 JPG、PNG、WebP、SVG，最大 100MB</p>
+          </div>
+          <div id="canvasWrap" class="canvas-wrap" style="display:none;">
+            <canvas id="canvas"></canvas>
+            <div id="anchorOverlay" class="anchor-overlay">
+              <svg id="anchorSvg"></svg>
+              <div class="corner" data-i="0"></div>
+              <div class="corner" data-i="1"></div>
+              <div class="corner" data-i="2"></div>
+              <div class="corner" data-i="3"></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <section class="panel">
+            <h3>圆角 (0-100)</h3>
+            <div class="radius-control">
+              <input type="range" id="radiusSlider" min="0" max="100" value="0">
+              <span id="radiusVal">0</span>
+            </div>
+          </section>
+          <section class="panel">
+            <h3>壁纸适配</h3>
+            <div class="mode-btns">
+              <button type="button" class="mode-btn active" data-mode="fill">铺满</button>
+              <button type="button" class="mode-btn" data-mode="fit">适应</button>
+              <button type="button" class="mode-btn" data-mode="crop">裁剪</button>
+            </div>
+            <div class="scale-control">
+              <label>缩放</label>
+              <input type="range" id="wallpaperScaleSlider" min="50" max="200" value="100">
+              <span id="wallpaperScaleVal">1.0x</span>
+            </div>
+          </section>
+          <section class="panel">
+            <h3>锁屏模板</h3>
+            <select id="frameSelect" class="frame-select">
+              <option value="">无</option>
+            </select>
+          </section>
+          <section class="panel">
+            <h3>配图模板</h3>
+            <div class="template-actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnSaveTemplate">保存模板</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnClearTemplates">清空</button>
+            </div>
+            <div id="templateList" class="template-list"></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <div id="saveTemplateModal" class="modal modal-overlay-black">
+      <div class="modal-content modal-sm">
+        <h3>保存模板</h3>
+        <input type="text" id="templateNameInput" class="template-name-input" placeholder="请输入模板名称">
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btnCancelSave">取消</button>
+          <button type="button" class="btn btn-primary" id="btnConfirmSave">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="previewModal" class="modal">
+      <div class="modal-content">
+        <img id="previewImg" alt="预览">
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btnBack">返回编辑</button>
+          <button type="button" class="btn btn-secondary" id="btnSaveTemplateFromPreview">保存配图模版</button>
+          <button type="button" class="btn btn-primary" id="btnExportPreview">导出</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
